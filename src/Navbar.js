@@ -1,19 +1,16 @@
 import React from "react";
 
-class Navbar extends React.Component {
-
-    render () {
-        return (
-            <>
-                <div style={styles.nav}>
-                    <div style={styles.cartIconContainer}>
-                        <img style={styles.cartIcon} src="https://www.iconpacks.net/icons/2/free-shopping-cart-icon-3041-thumb.png" alt="cart-icon" />
-                        <div style={styles.cartCount}> 3 </div>
-                    </div>
+const Navbar = (props) => {
+    return (
+        <>
+            <div style={styles.nav}>
+                <div style={styles.cartIconContainer}>
+                    <img style={styles.cartIcon} src="https://www.iconpacks.net/icons/2/free-shopping-cart-icon-3041-thumb.png" alt="cart-icon" />
+                    <div style={styles.cartCount}> {props.count} </div>
                 </div>
-            </>
-        )
-    }
+            </div>
+        </>
+    )
 }
 
 const styles = {
