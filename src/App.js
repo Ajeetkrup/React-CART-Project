@@ -11,22 +11,22 @@ class App extends React.Component {
         {
           title: 'Mobile Phone',
           price: 79,
-          qty: 3,
-          img: '',
+          qty: 2,
+          img: 'https://m.media-amazon.com/images/I/91W42b8YW+L._SX569_.jpg',
           id: 1
         },
         {
           title: 'Tele Phone',
           price: 789,
           qty: 3,
-          img: '',
+          img: 'https://m.media-amazon.com/images/I/41ISy8+CNWL._SY355_.jpg',
           id: 2
         },
         {
           title: 'Watch',
           price: 79,
-          qty: 3,
-          img: '',
+          qty: 5,
+          img: 'https://cdn.shopify.com/s/files/1/0266/1371/0884/products/7_df138706-1b15-4e94-b297-189068d12e40-sw.png?v=1659590799',
           id: 3
         }
       ]
@@ -84,6 +84,17 @@ class App extends React.Component {
     })
     return count;
   }
+
+  hasTotalPrice = () => {
+    const {products} = this.state;
+    let totPr = 0;
+
+    products.forEach((product) => {
+      totPr += (product.qty * product.price)
+    })
+
+    return totPr;
+  }
   render() {
     return (
       <div className="App">
@@ -95,6 +106,7 @@ class App extends React.Component {
           onDecreaseQty={this.hasDecreaseQty} 
           onDeletePro={this.hasDeletePro}
         />
+        <div style={{padding: 10, fontSize: 30}}>Total Price: {this.hasTotalPrice()}</div>
       </div>
     );
   }
