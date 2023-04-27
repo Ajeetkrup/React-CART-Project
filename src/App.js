@@ -43,6 +43,9 @@ class App extends React.Component {
     firebase
     .firestore()
     .collection('products')
+    // .where('price', '==', '999')
+    // .where('qty', '==', '4')
+    .orderBy('qty', 'desc')
     .onSnapshot((snapshot) => {
       // console.log(snapshot)
 
