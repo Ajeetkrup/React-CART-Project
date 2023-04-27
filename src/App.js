@@ -122,11 +122,21 @@ class App extends React.Component {
   hasDeletePro = (id) => {
     const { products } = this.state;
 
-    const items = products.filter((item) => item.id != id);
+    // const items = products.filter((item) => item.id != id);
 
-    this.setState({
-      products: items
+    // this.setState({
+    //   products: items
+    // })
+
+    const docRef = firebase.firestore().collection('products').doc(id);
+
+    docRef.delete()
+    .then(() => {
+      console.log("Product deleted successfully");
     })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 
   hasQtyCount = (product) => {
