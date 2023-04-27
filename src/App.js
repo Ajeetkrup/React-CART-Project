@@ -68,13 +68,25 @@ class App extends React.Component {
     const { products } = this.state;
 
     const ind = products.indexOf(product);
-    products[ind].qty += 1;
+    // products[ind].qty += 1;
 
-    this.setState(
-      {
-        products: products
-      }
-    )
+    // this.setState(
+    //   {
+    //     products: products
+    //   }
+    // )
+
+    const docRef = firebase.firestore().collection('products').doc(products[ind].id);
+
+    docRef.update({
+      qty: products[ind].qty + 1
+    })
+    .then(() => {
+      console.log("Product added successfully");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 
   hasDecreaseQty = (product) => {
@@ -86,13 +98,25 @@ class App extends React.Component {
       return;
     }
 
-    products[ind].qty -= 1;
+    // products[ind].qty -= 1;
 
-    this.setState(
-      {
-        products: products
-      }
-    )
+    // this.setState(
+    //   {
+    //     products: products
+    //   }
+    // )
+
+    const docRef = firebase.firestore().collection('products').doc(products[ind].id);
+
+    docRef.update({
+      qty: products[ind].qty - 1
+    })
+    .then(() => {
+      console.log("Product added successfully");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 
   hasDeletePro = (id) => {
