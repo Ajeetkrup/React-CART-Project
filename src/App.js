@@ -2,35 +2,66 @@ import CartItem from "./CartItem";
 import React from "react";
 import Cart from "./Cart";
 import Navbar from "./Navbar"
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      products: [
-        {
-          title: 'Mobile Phone',
-          price: 79,
-          qty: 2,
-          img: 'https://m.media-amazon.com/images/I/91W42b8YW+L._SX569_.jpg',
-          id: 1
-        },
-        {
-          title: 'Tele Phone',
-          price: 789,
-          qty: 3,
-          img: 'https://m.media-amazon.com/images/I/41ISy8+CNWL._SY355_.jpg',
-          id: 2
-        },
-        {
-          title: 'Watch',
-          price: 79,
-          qty: 5,
-          img: 'https://cdn.shopify.com/s/files/1/0266/1371/0884/products/7_df138706-1b15-4e94-b297-189068d12e40-sw.png?v=1659590799',
-          id: 3
-        }
-      ]
+      products: [],
+      loading: true
     }
+  }
+
+  //called just after the app renders
+  componentDidMount () {
+    // firebase
+    // .firestore()
+    // .collection('products')
+    // .get()
+    // .then((snapshot) => {
+    //   // console.log(snapshot)
+
+    //   snapshot.docs.map((docs) => {
+    //     console.log(docs.data())
+    //   })
+
+    //   const products = snapshot.docs.map((docs) => {
+    //     const data = docs.data();
+
+    //     data.id = docs.id;
+    //     return data;
+    //   })
+
+    //   this.setState({
+    //     products: products,
+    //     loading:false
+    //   })
+    // })
+
+    firebase
+    .firestore()
+    .collection('products')
+    .onSnapshot((snapshot) => {
+      // console.log(snapshot)
+
+      snapshot.docs.map((docs) => {
+        console.log(docs.data())
+      })
+
+      const products = snapshot.docs.map((docs) => {
+        const data = docs.data();
+
+        data.id = docs.id;
+        return data;
+      })
+
+      this.setState({
+        products: products,
+        loading:false
+      })
+    })
   }
 
   hasIncreaseQty = (product) => {
@@ -95,17 +126,38 @@ class App extends React.Component {
 
     return totPr;
   }
+
+  addProduct = () => {
+    firebase.firestore()
+    .collection('products')
+    .add({
+      title: 'ball pen',
+      price: 8,
+      qty: 10,
+      img:''
+    })
+    .then((docRef) => {
+      console.log(docRef);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   render() {
+    const {products, loading} = this.state
     return (
       <div className="App">
         {/* <h1>CART</h1> */}
         <Navbar count={this.hasQtyCount()} />
+        <button onClick={this.addProduct} style={{padding: 20, margin:5, fontSize: 15, color:"green"}}>Add Product</button>
         <Cart 
-          products={this.state.products}
+          products={products}
           onIncreaseQty={this.hasIncreaseQty} 
           onDecreaseQty={this.hasDecreaseQty} 
           onDeletePro={this.hasDeletePro}
         />
+        {loading && <h1>Loading Products...</h1>}
         <div style={{padding: 10, fontSize: 30}}>Total Price: {this.hasTotalPrice()}</div>
       </div>
     );
